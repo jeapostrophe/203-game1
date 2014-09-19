@@ -24,56 +24,76 @@ class Model {
         grid[0][3] = 2;
     }
 
-    public Model react( CharKey k ) {
-        // XXX This isn't right
-        if ( k.isRightArrow() ) {
-            for ( int x = 0; x < 4; x++ ) {
-                for ( int y = 0; y < 3; y++ ) {
-                    if ( grid[x][y+1] == grid[x][y] ) {
-                        grid[x][y+1] += grid[x][y];
-                        grid[x][y] = 0;
+    public Model shiftRight() {
+        boolean merge = false;
+        for ( int x = 0; x < 4; x++ ) {
+            // Starting from the right
+            for ( int y2 = 3; y2 >= 0; y2-- ) {
+                // Look to the left
+                if ( grid[x][y2] != 0 ) {
+                    for ( int y1 = y2 - 1; y1 >= 0; y1-- ) {
+                        if ( grid[x][y2] == grid[x][y1] ) {
+                            grid[x][y2] += grid[x][y1];
+                            grid[x][y1] = 0;
+                            merge = true;
+                            break;
+                        } else if ( grid[x][y1] != 0 ) {
+                            break;
+                        }
                     }
-                    if ( grid[x][y+1] == 0 ) {
-                        grid[x][y+1] = grid[x][y];
-                        grid[x][y] = 0;
+                    // Then look to the right for zeros
+                    for ( int y1 = y2 + 1; y1 < 4; y1++ ) {
+                        if ( grid[x][y1] != 0 ) {
+                            break;
+                        } else {
+                            grid[x][y1] = grid[x][y1-1];
+                            grid[x][y1-1] = 0;
+                        }
                     }
                 }
             }
-            // XXX Not quite right
+        }
+        if ( merge ) {
             for ( int x = 0; x < 4; x++ ) {
                 if ( grid[x][0] == 0 ) {
                     grid[x][0] = 2;
                     break;
                 }
             }
-            return this;
+        }
+        return this;
+    }
+
+    public Model shiftLeft() {
+        return this;
+    }
+
+    public Model shiftDown() {
+        return this;
+    }
+
+    public Model shiftUp() {
+        return this;
+    }
+
+    public Model react( CharKey k ) {
+        if ( k.isRightArrow() ) {
+            return this.shiftRight();
+        } else if ( k.isLeftArrow() ) {
+            return this.shiftLeft();
+        } else if ( k.isUpArrow() ) {
+            return this.shiftUp();
         } else if ( k.isDownArrow() ) {
-            for ( int y = 0; y < 4; y++ ) {
-                for ( int x = 0; x < 3; x++ ) {
-                    if ( grid[x+1][y] == grid[x][y] ) {
-                        grid[x+1][y] += grid[x][y];
-                        grid[x][y] = 0;
-                    }
-                    if ( grid[x+1][y] == 0 ) {
-                        grid[x+1][y] = grid[x][y];
-                        grid[x][y] = 0;
-                    }
-                }
-            }
-            // XXX Not quite right
-            for ( int y = 0; y < 4; y++ ) {
-                if ( grid[0][y] == 0 ) {
-                    grid[0][y] = 2;
-                    break;
-                }
-            }
-            return this;
+            return this.shiftRight();
         } else {
             return this;
         }
+        // xxx detect no move possible for end
     }
 
     public void draw ( ConsoleSystemInterface s ) {
+        // xxx show score
+        // xxx use colors
         int STARTW = (MAXW / 4);
         int STARTH = 0;
         int WIDTH = 6;
