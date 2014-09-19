@@ -75,7 +75,7 @@ class Game1Test {
 
 class Game1Run {
     public enum DemoMode { ANIMATION, SLIDESHOW, REACTIVE };
-    static DemoMode mode = DemoMode.ANIMATION;
+    static DemoMode mode = DemoMode.REACTIVE;
 
     public static void main ( String[] args ) throws InterruptedException {
         ConsoleSystemInterface s =
