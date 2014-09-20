@@ -15,7 +15,6 @@ class Testeez {
 class Model {
     static int MAXH = 24;
     static int MAXW = 79;
-    static int MAX = MAXH;
     int grid[][];
 
     Model() {
@@ -24,7 +23,8 @@ class Model {
         grid[0][3] = 2;
     }
 
-    public void spawn(int x0, int dx, int y0, int dy) {
+    public void spawn(int x0, int dx,
+                      int y0, int dy) {
         int x = x0;
         int y = y0;
         while ( x < 4 && y < 4 ) {
@@ -37,7 +37,9 @@ class Model {
         }
     }
 
-    public boolean merge(boolean horiz, int x2, int dx1, int y2, int dy1) {
+    public boolean merge(boolean horiz, 
+                         int x2, int dx1, 
+                         int y2, int dy1) {
         boolean merge = false;
         int x1 = x2 + dx1;
         int y1 = y2 + dy1;
@@ -61,7 +63,8 @@ class Model {
         return merge;
     }
 
-    public boolean move(int last_x1, int x2, int dx1, int last_y1, int y2, int dy1) {
+    public boolean move(int last_x1, int x2, int dx1, 
+                        int last_y1, int y2, int dy1) {
         boolean merge = false;
         int x1 = x2 + dx1;
         int y1 = y2 + dy1;
@@ -81,7 +84,9 @@ class Model {
         return merge;
     }
 
-    public void shift(boolean horiz, int dx1, int dy1, int x2_start, int dx2, int x2_end, int y2_start, int dy2, int y2_end) {
+    public void shift(boolean horiz, int dx1, int dy1,
+                      int x2_start, int dx2, int x2_end,
+                      int y2_start, int dy2, int y2_end) {
         boolean merge = false;
         int x1 = 0;
         int y1 = 0;
