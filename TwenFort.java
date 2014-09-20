@@ -33,7 +33,7 @@ class Model {
         }
     }
 
-    public boolean lookHoriz(int x, int y2, int dy1) {
+    public boolean mergeHoriz(int x, int y2, int dy1) {
         boolean merge = false;
         for ( int y1 = y2 + dy1; 0 <= y1 && y1 < 4; y1 += dy1 ) {
             if ( grid[x][y2] == grid[x][y1] ) {
@@ -55,7 +55,7 @@ class Model {
             for ( int y2 = 3; y2 >= 0; y2-- ) {
                 // Look to the left
                 if ( grid[x][y2] != 0 ) {
-                    merge |= lookHoriz(x, y2, -1);
+                    merge |= mergeHoriz(x, y2, -1);
                     // Then look to the right for zeros
                     for ( int y1 = y2 + 1; y1 < 4; y1++ ) {
                         if ( grid[x][y1] != 0 ) {
@@ -84,7 +84,7 @@ class Model {
             for ( int y2 = 0; y2 < 4; y2++ ) {
                 // Look to the right
                 if ( grid[x][y2] != 0 ) {
-                    merge |= lookHoriz(x, y2, 1);
+                    merge |= mergeHoriz(x, y2, 1);
                     // Then look to the left for zeros
                     for ( int y1 = y2 - 1; y1 >= 0; y1-- ) {
                         if ( grid[x][y1] != 0 ) {
