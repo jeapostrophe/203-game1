@@ -48,6 +48,22 @@ class Model {
         return merge;
     }
 
+    public boolean moveHoriz(int x, int last_y1, int y2, int dy1) {
+        boolean merge = false;
+        for ( int y1 = y2 + dy1; 0 <= y1 && y1 < 4; y1 += dy1 ) {
+            if ( grid[x][y1] != 0 ) {
+                break;
+            } else {
+                grid[x][y1] = grid[x][y1-dy1];
+                grid[x][y1-dy1] = 0;
+                if ( y1 == last_y1 ) {
+                    merge = true;
+                }
+            }
+        }
+        return merge;
+    }
+
     public Model shiftRight() {
         boolean merge = false;
         for ( int x = 0; x < 4; x++ ) {
@@ -57,17 +73,7 @@ class Model {
                 if ( grid[x][y2] != 0 ) {
                     merge |= mergeHoriz(x, y2, -1);
                     // Then look to the right for zeros
-                    for ( int y1 = y2 + 1; y1 < 4; y1++ ) {
-                        if ( grid[x][y1] != 0 ) {
-                            break;
-                        } else {
-                            grid[x][y1] = grid[x][y1-1];
-                            grid[x][y1-1] = 0;
-                            if ( y1 == 3 ) {
-                                merge = true;
-                            }
-                        }
-                    }
+                    merge |= moveHoriz(x, 3, y2, 1);
                 }
             }
         }
@@ -86,17 +92,7 @@ class Model {
                 if ( grid[x][y2] != 0 ) {
                     merge |= mergeHoriz(x, y2, 1);
                     // Then look to the left for zeros
-                    for ( int y1 = y2 - 1; y1 >= 0; y1-- ) {
-                        if ( grid[x][y1] != 0 ) {
-                            break;
-                        } else {
-                            grid[x][y1] = grid[x][y1+1];
-                            grid[x][y1+1] = 0;
-                            if ( y1 == 0 ) {
-                                merge = true;
-                            }
-                        }
-                    }
+                    merge |= moveHoriz(x, 0, y2, -1);
                 }
             }
         }
