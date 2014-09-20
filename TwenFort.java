@@ -132,31 +132,15 @@ class Model {
         return this;
     }
 
-    public Model shiftRight() {
-        return shiftHoriz(3, -1, 0);
-    }
-
-    public Model shiftLeft() {
-        return shiftHoriz(0, +1, 3);
-    }
-
-    public Model shiftDown() {
-        return shiftVert(3, -1, 0);
-    }
-
-    public Model shiftUp() {
-        return shiftVert(0, +1, 3);
-    }
-
     public Model react( CharKey k ) {
         if ( k.isRightArrow() ) {
-            return this.shiftRight();
+            return shiftHoriz(3, -1, 0);
         } else if ( k.isLeftArrow() ) {
-            return this.shiftLeft();
+            return shiftHoriz(0, +1, 3);
         } else if ( k.isUpArrow() ) {
-            return this.shiftUp();
+            return shiftVert(0, +1, 3);
         } else if ( k.isDownArrow() ) {
-            return this.shiftDown();
+            return shiftVert(3, -1, 0);
         } else {
             return this;
         }
