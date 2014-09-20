@@ -27,7 +27,7 @@ class Model {
     public void spawn(int x0, int dx, int y0, int dy) {
         int x = x0;
         int y = y0;
-        while ( x < 4 ) {
+        while ( x < 4 && y < 4 ) {
             if ( grid[x][y] == 0 ) {
                 grid[x][y] = 2;
                 break;
