@@ -147,18 +147,17 @@ class Model {
         int score = 0;
         for ( int x = 0; x < 4; x++ ) {
             for ( int y = 0; y < 4; y++ ) {
-                score += grid[y][x];
                 int X0 = STARTW + WIDTH * x;
                 int Y0 = STARTH + HEIGHT * y;
                 s.print(X0, Y0, "+-----+", s.LIGHT_GRAY);
+                for ( int j = 1; j < HEIGHT; j++ ) {
+                    s.print(X0, Y0 + j, "|     |", s.LIGHT_GRAY);
+                }
                 int v = grid[y][x];
                 if ( v != 0 ) {
                     s.print(X0 + 1, Y0 + 3, ("" + v), value2color(s, v));
                 }
-                for ( int j = 1; j < HEIGHT; j++ ) {
-                    s.print(X0, Y0 + j, "|", s.LIGHT_GRAY);
-                    s.print(X0 + WIDTH, Y0 + j, "|", s.LIGHT_GRAY);
-                }
+                score += v;
             }
         }
         s.print(STARTW, STARTH + HEIGHT * 4, "+-----+-----+-----+-----+", s.LIGHT_GRAY);
