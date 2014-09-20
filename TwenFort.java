@@ -80,12 +80,6 @@ class Model {
         }
         return merge;
     }
-    public boolean moveHoriz(int x, int last_y1, int y2, int dy1) {
-        return move(-1, x, 0, last_y1, y2, dy1);
-    }
-    public boolean moveVert(int y, int last_x1, int x2, int dx1) {
-        return move(last_x1, x2, dx1, -1, y, 0);
-    }
 
     public Model shiftHoriz(int y2_start, int dy2, int y2_end) {
         boolean merge = false;
@@ -93,7 +87,7 @@ class Model {
             for ( int y2 = y2_start; 0 <= y2 && y2 < 4; y2 += dy2 ) {
                 if ( grid[x][y2] != 0 ) {
                     merge |= merge(true, x, 0, y2, dy2);
-                    merge |= moveHoriz(x, y2_start, y2, -dy2);
+                    merge |= move(-1, x, 0, y2_start, y2, -dy2);
                 }
             }
         }
@@ -108,7 +102,7 @@ class Model {
             for ( int x2 = x2_start; 0 <= x2 && x2 < 4; x2 += dx2 ) {
                 if ( grid[x2][y] != 0 ) {
                     merge |= merge(false, x2, dx2, y, 0);
-                    merge |= moveVert(y, x2_start, x2, -dx2);
+                    merge |= move(x2_start, x2, -dx2, -1, y, 0);
                 }
             }
         }
