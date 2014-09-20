@@ -112,14 +112,14 @@ class Model {
     }
 
     public void draw ( ConsoleSystemInterface s ) {
-        // xxx show score
-        // xxx use colors
         int STARTW = (MAXW / 4);
         int STARTH = 0;
         int WIDTH = 6;
         int HEIGHT = 6;
+        int score = 0;
         for ( int x = 0; x < 4; x++ ) {
             for ( int y = 0; y < 4; y++ ) {
+                score += grid[y][x];
                 for ( int i = 0; i < WIDTH; i++ ) {
                     for ( int j = 0; j < HEIGHT; j++ ) {
                         String c;
@@ -167,6 +167,7 @@ class Model {
             }
         }
         s.print(STARTW, STARTH + HEIGHT * 4, "+-----+-----+-----+-----+", s.LIGHT_GRAY);
+        s.print(0, 0, "Score: " + score, s.WHITE);
     }
 
     public static void test () throws Exception {
