@@ -44,13 +44,10 @@ class Model {
         int x1 = x2 + dx1;
         int y1 = y2 + dy1;
         while ( 0 <= y1 && y1 < 4 && 0 <= x1 && x1 < 4 ) {
-            if ( horiz && grid[x1][y2] == grid[x1][y1] ) {
-                grid[x1][y2] += grid[x1][y1];
-                grid[x1][y1] = 0;
-                merge = true;
-                break;
-            } else if ( ! horiz && grid[x2][y1] == grid[x1][y1] ) {
-                grid[x2][y1] += grid[x1][y1];
+            int x3 = horiz ? x1 : x2;
+            int y3 = horiz ? y2 : y1;
+            if ( grid[x3][y3] == grid[x1][y1] ) {
+                grid[x3][y3] += grid[x1][y1];
                 grid[x1][y1] = 0;
                 merge = true;
                 break;
@@ -120,20 +117,19 @@ class Model {
             shift(false, 0, 1, +3, -1, 0, -1, +0, 0);
         }
         return this;
-        // xxx detect no move possible for end
     }
 
     static int value2color( ConsoleSystemInterface s, int v ) {
         switch (v) {
-        case 2: return s.WHITE;
-        case 4: return s.BLUE;
-        case 8: return s.CYAN;
-        case 16: return s.YELLOW;
-        case 32: return s.GREEN;
-        case 64: return s.LEMON;
-        case 128: return s.MAGENTA;
-        case 256: return s.PURPLE;
-        case 512: return s.RED;
+        case    2: return s.WHITE;
+        case    4: return s.BLUE;
+        case    8: return s.CYAN;
+        case   16: return s.YELLOW;
+        case   32: return s.GREEN;
+        case   64: return s.LEMON;
+        case  128: return s.MAGENTA;
+        case  256: return s.PURPLE;
+        case  512: return s.RED;
         case 1024: return s.TEAL;
         default: return s.YELLOW;
         }
