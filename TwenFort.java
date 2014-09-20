@@ -63,7 +63,8 @@ class Model {
 
     public boolean moveHoriz(int x, int last_y1, int y2, int dy1) {
         boolean merge = false;
-        for ( int y1 = y2 + dy1; 0 <= y1 && y1 < 4; y1 += dy1 ) {
+        int y1 = y2 + dy1;
+        while ( 0 <= y1 && y1 < 4 ) {
             if ( grid[x][y1] != 0 ) {
                 break;
             } else {
@@ -73,12 +74,14 @@ class Model {
                     merge = true;
                 }
             }
+            y1 += dy1;
         }
         return merge;
     }
     public boolean moveVert(int y, int last_x1, int x2, int dx1) {
         boolean merge = false;
-        for ( int x1 = x2 + dx1; 0 <= x1 && x1 < 4; x1 += dx1 ) {
+        int x1 = x2 + dx1;
+        while ( 0 <= x1 && x1 < 4 ) {
             if ( grid[x1][y] != 0 ) {
                 break;
             } else {
@@ -88,6 +91,7 @@ class Model {
                     merge = true;
                 }
             }
+            x1 += dx1;
         }
         return merge;
     }
