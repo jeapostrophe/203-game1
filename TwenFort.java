@@ -13,8 +13,6 @@ class Testeez {
 }
 
 class Model {
-    static int MAXH = 24;
-    static int MAXW = 79;
     int grid[][];
 
     Model() {
@@ -131,11 +129,11 @@ class Model {
         case  256: return s.PURPLE;
         case  512: return s.RED;
         case 1024: return s.TEAL;
-        default: return s.YELLOW;
+        default:   return s.YELLOW;
         }
     }
 
-    static int STARTW = (MAXW / 4);
+    static int STARTW = 20;
     static int STARTH = 0;
     static int WIDTH = 6;
     static int HEIGHT = 6;
