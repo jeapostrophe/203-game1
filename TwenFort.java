@@ -118,52 +118,50 @@ class Model {
         // xxx detect no move possible for end
     }
 
+    static int value2color( ConsoleSystemInterface s, int v ) {
+        switch (v) {
+        case 2: return s.WHITE;
+        case 4: return s.BLUE;
+        case 8: return s.CYAN;
+        case 16: return s.YELLOW;
+        case 32: return s.GREEN;
+        case 64: return s.LEMON;
+        case 128: return s.MAGENTA;
+        case 256: return s.PURPLE;
+        case 512: return s.RED;
+        case 1024: return s.TEAL;
+        default: return s.YELLOW;
+        }
+    }
+
+    static int STARTW = (MAXW / 4);
+    static int STARTH = 0;
+    static int WIDTH = 6;
+    static int HEIGHT = 6;
     public void draw ( ConsoleSystemInterface s ) {
-        int STARTW = (MAXW / 4);
-        int STARTH = 0;
-        int WIDTH = 6;
-        int HEIGHT = 6;
         int score = 0;
         for ( int x = 0; x < 4; x++ ) {
             for ( int y = 0; y < 4; y++ ) {
                 score += grid[y][x];
                 for ( int i = 0; i < WIDTH; i++ ) {
                     for ( int j = 0; j < HEIGHT; j++ ) {
-                        String c;
-                        int col = s.WHITE;
-                        if ( ( i == 0 && j == 0 ) ) {
+                        String c = "";
+                        int col = s.LIGHT_GRAY;
+                        if ( i == 0 && j == 0 ) {
                             c = "+";
-                            col = s.LIGHT_GRAY;
                         } else if ( i == 0 ) {
                             c = "|";
-                            col = s.LIGHT_GRAY;
                         } else if ( j == 0 ) {
                             c = "-";
                             if ( x == 3 && i == WIDTH-1 ) {
                                 c = "-+";
                             }
-                            col = s.LIGHT_GRAY;
                         } else if ( x == 3 && i == WIDTH-1 ) {
                             c = " |";
-                            col = s.LIGHT_GRAY;
-                        } else {
-                            c = "";
                         }
                         if ( i == 1 && j == 3 && grid[y][x] != 0 ) {
                             c = "" + grid[y][x];
-                            switch (grid[y][x]) {
-                            case 2: col = s.WHITE; break;
-                            case 4: col = s.BLUE; break;
-                            case 8: col = s.CYAN; break;
-                            case 16: col = s.YELLOW; break;
-                            case 32: col = s.GREEN; break;
-                            case 64: col = s.LEMON; break;
-                            case 128: col = s.MAGENTA; break;
-                            case 256: col = s.PURPLE; break;
-                            case 512: col = s.RED; break;
-                            case 1024: col = s.TEAL; break;
-                            default: col = s.YELLOW; break;
-                            }
+                            col = value2color(s, grid[y][x]);
                         }
                         s.print(STARTW + WIDTH * x + i,
                                 STARTH + HEIGHT * y + j,
@@ -189,9 +187,9 @@ class TwenFortTest {
 }
 
 class TwenFortRun {
-    public static void main ( String[] args ) throws InterruptedException {
+    public static void main ( String[] args ) {
         ConsoleSystemInterface s =
-            new WSwingConsoleInterface("ASCII 2048", true);
+            new WSwingConsoleInterface("ASCII 2048 by Jay!", true);
 
         Model m = new Model();
         while (true) {
