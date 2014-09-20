@@ -24,20 +24,16 @@ class Model {
         grid[0][3] = 2;
     }
 
-    public void spawnHoriz(int col) {
-        for ( int x = 0; x < 4; x++ ) {
-            if ( grid[x][col] == 0 ) {
-                grid[x][col] = 2;
+    public void spawn(int x0, int dx, int y0, int dy) {
+        int x = x0;
+        int y = y0;
+        while ( x < 4 ) {
+            if ( grid[x][y] == 0 ) {
+                grid[x][y] = 2;
                 break;
             }
-        }
-    }
-    public void spawnVert(int row) {
-        for ( int y = 0; y < 4; y++ ) {
-            if ( grid[row][y] == 0 ) {
-                grid[row][y] = 2;
-                break;
-            }
+            x += dx;
+            y += dy;
         }
     }
 
@@ -112,7 +108,7 @@ class Model {
             }
         }
         if ( merge ) {
-            spawnHoriz(y2_end);
+            spawn(0, 1, y2_end, 0);
         }
         return this;
     }
@@ -127,7 +123,7 @@ class Model {
             }
         }
         if ( merge ) {
-            spawnVert(x2_end);
+            spawn(x2_end, 0, 0, 1);
         }
         return this;
     }
