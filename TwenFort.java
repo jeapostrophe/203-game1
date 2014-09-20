@@ -32,6 +32,14 @@ class Model {
             }
         }
     }
+    public void spawnVert(int row) {
+        for ( int y = 0; y < 4; y++ ) {
+            if ( grid[row][y] == 0 ) {
+                grid[row][y] = 2;
+                break;
+            }
+        }
+    }
 
     public boolean mergeHoriz(int x, int y2, int dy1) {
         boolean merge = false;
@@ -47,6 +55,20 @@ class Model {
         }
         return merge;
     }
+    public boolean mergeVert(int y, int x2, int dx1) {
+        boolean merge = false;
+        for ( int x1 = x2 + dx1; 0 <= x1 && x1 < 4; x1 += dx1 ) {
+            if ( grid[x2][y] == grid[x1][y] ) {
+                grid[x2][y] += grid[x1][y];
+                grid[x1][y] = 0;
+                merge = true;
+                break;
+            } else if ( grid[x1][y] != 0 ) {
+                break;
+            }
+        }
+        return merge;
+    }
 
     public boolean moveHoriz(int x, int last_y1, int y2, int dy1) {
         boolean merge = false;
@@ -57,6 +79,21 @@ class Model {
                 grid[x][y1] = grid[x][y1-dy1];
                 grid[x][y1-dy1] = 0;
                 if ( y1 == last_y1 ) {
+                    merge = true;
+                }
+            }
+        }
+        return merge;
+    }
+    public boolean moveVert(int y, int last_x1, int x2, int dx1) {
+        boolean merge = false;
+        for ( int x1 = x2 + dx1; 0 <= x1 && x1 < 4; x1 += dx1 ) {
+            if ( grid[x1][y] != 0 ) {
+                break;
+            } else {
+                grid[x1][y] = grid[x1-dx1][y];
+                grid[x1-dx1][y] = 0;
+                if ( x1 == last_x1 ) {
                     merge = true;
                 }
             }
@@ -79,55 +116,6 @@ class Model {
         }
         return this;
     }
-
-    public Model shiftRight() {
-        return shiftHoriz(3, -1, 0);
-    }
-
-    public Model shiftLeft() {
-        return shiftHoriz(0, +1, 3);
-    }
-
-    public void spawnVert(int row) {
-        for ( int y = 0; y < 4; y++ ) {
-            if ( grid[row][y] == 0 ) {
-                grid[row][y] = 2;
-                break;
-            }
-        }
-    }
-
-    public boolean mergeVert(int y, int x2, int dx1) {
-        boolean merge = false;
-        for ( int x1 = x2 + dx1; 0 <= x1 && x1 < 4; x1 += dx1 ) {
-            if ( grid[x2][y] == grid[x1][y] ) {
-                grid[x2][y] += grid[x1][y];
-                grid[x1][y] = 0;
-                merge = true;
-                break;
-            } else if ( grid[x1][y] != 0 ) {
-                break;
-            }
-        }
-        return merge;
-    }
-
-    public boolean moveVert(int y, int last_x1, int x2, int dx1) {
-        boolean merge = false;
-        for ( int x1 = x2 + dx1; 0 <= x1 && x1 < 4; x1 += dx1 ) {
-            if ( grid[x1][y] != 0 ) {
-                break;
-            } else {
-                grid[x1][y] = grid[x1-dx1][y];
-                grid[x1-dx1][y] = 0;
-                if ( x1 == last_x1 ) {
-                    merge = true;
-                }
-            }
-        }
-        return merge;
-    }
-
     public Model shiftVert(int x2_start, int dx2, int x2_end) {
         boolean merge = false;
         for ( int y = 0; y < 4; y++ ) {
@@ -142,6 +130,14 @@ class Model {
             spawnVert(x2_end);
         }
         return this;
+    }
+
+    public Model shiftRight() {
+        return shiftHoriz(3, -1, 0);
+    }
+
+    public Model shiftLeft() {
+        return shiftHoriz(0, +1, 3);
     }
 
     public Model shiftDown() {
