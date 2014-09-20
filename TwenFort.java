@@ -84,13 +84,15 @@ class Model {
     public Model shiftHoriz(int y2_start, int dy2, int y2_end) {
         boolean merge = false;
         int dx1 = 1;
-        for ( int x1 = 0; x1 < 4; x1 += dx1 ) {
+        int x1 = 0;
+        while ( x1 < 4 ) {
             for ( int y2 = y2_start; 0 <= y2 && y2 < 4; y2 += dy2 ) {
                 if ( grid[x1][y2] != 0 ) {
                     merge |= merge(true, x1, 0, y2, dy2);
                     merge |= move(-1, x1, 0, y2_start, y2, -dy2);
                 }
             }
+            x1 += dx1;
         }
         if ( merge ) {
             spawn(0, 1, y2_end, 0);
@@ -100,13 +102,15 @@ class Model {
     public Model shiftVert(int x2_start, int dx2, int x2_end) {
         boolean merge = false;
         int dy1 = 1;
-        for ( int y1 = 0; y1 < 4; y1 += dy1 ) {
+        int y1 = 0;
+        while ( y1 < 4 ) {
             for ( int x2 = x2_start; 0 <= x2 && x2 < 4; x2 += dx2 ) {
                 if ( grid[x2][y1] != 0 ) {
                     merge |= merge(false, x2, dx2, y1, 0);
                     merge |= move(x2_start, x2, -dx2, -1, y1, 0);
                 }
             }
+            y1 += dy1;
         }
         if ( merge ) {
             spawn(x2_end, 0, 0, 1);
