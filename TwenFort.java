@@ -81,7 +81,7 @@ class Model {
         return merge;
     }
 
-    public Model shiftHoriz(boolean horiz, int dx1, int dy1, int x2_start, int dx2, int x2_end, int y2_start, int dy2, int y2_end) {
+    public void shift(boolean horiz, int dx1, int dy1, int x2_start, int dx2, int x2_end, int y2_start, int dy2, int y2_end) {
         boolean merge = false;
         int x1 = 0;
         int y1 = 0;
@@ -102,44 +102,19 @@ class Model {
         if ( merge ) {
             spawn(x2_end, dx1, y2_end, dy1);
         }
-        return this;
-    }
-    public Model shiftVert(boolean horiz, int dx1, int dy1, int x2_start, int dx2, int x2_end, int y2_start, int dy2, int y2_end ) {
-        boolean merge = false;
-        int x1 = 0;
-        int y1 = 0;
-        while ( x1 < 4 && y1 < 4 ) {
-            int x2 = x2_start == -1 ? x1 : x2_start;
-            int y2 = y2_start == -1 ? y1 : y2_start;
-            while ( 0 <= x2 && x2 < 4 && 0 <= y2 && y2 < 4 ) {
-                if ( grid[x2][y2] != 0 ) {
-                    merge |= merge(horiz, x2, dx2, y2, dy2);
-                    merge |= move(x2_start, x2, -dx2, y2_start, y2, -dy2);
-                }
-                x2 += dx2;
-                y2 += dy2;
-            }
-            x1 += dx1;
-            y1 += dy1;
-        }
-        if ( merge ) {
-            spawn(x2_end, dx1, y2_end, dy1);
-        }
-        return this;
     }
 
     public Model react( CharKey k ) {
         if ( k.isRightArrow() ) {
-            return shiftHoriz(true, 1, 0, -1, 0, 0, 3, -1, 0);
+            shift( true, 1, 0, -1, +0, 0, +3, -1, 0);
         } else if ( k.isLeftArrow() ) {
-            return shiftHoriz(true, 1, 0, -1, 0, 0, 0, +1, 3);
+            shift( true, 1, 0, -1, +0, 0, +0, +1, 3);
         } else if ( k.isUpArrow() ) {
-            return shiftVert(false, 0, 1, 0, +1, 3, -1, 0, 0);
+            shift(false, 0, 1, +0, +1, 3, -1, +0, 0);
         } else if ( k.isDownArrow() ) {
-            return shiftVert(false, 0, 1, 3, -1, 0, -1, 0, 0);
-        } else {
-            return this;
+            shift(false, 0, 1, +3, -1, 0, -1, +0, 0);
         }
+        return this;
         // xxx detect no move possible for end
     }
 
@@ -223,8 +198,7 @@ class TwenFortRun {
             s.cls();
             m.draw(s);
             s.refresh();
-            CharKey k = s.inkey();
-            m = m.react(k);
+            m = m.react(s.inkey());
         }
     }
 }
