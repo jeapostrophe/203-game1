@@ -37,31 +37,26 @@ class Model {
         }
     }
 
-    public boolean mergeHoriz(int x, int y2, int dy1) {
+    public boolean merge(boolean horiz, int x2, int dx1, int y2, int dy1) {
         boolean merge = false;
-        for ( int y1 = y2 + dy1; 0 <= y1 && y1 < 4; y1 += dy1 ) {
-            if ( grid[x][y2] == grid[x][y1] ) {
-                grid[x][y2] += grid[x][y1];
-                grid[x][y1] = 0;
+        int x1 = x2 + dx1;
+        int y1 = y2 + dy1;
+        while ( 0 <= y1 && y1 < 4 && 0 <= x1 && x1 < 4 ) {
+            if ( horiz && grid[x1][y2] == grid[x1][y1] ) {
+                grid[x1][y2] += grid[x1][y1];
+                grid[x1][y1] = 0;
                 merge = true;
                 break;
-            } else if ( grid[x][y1] != 0 ) {
-                break;
-            }
-        }
-        return merge;
-    }
-    public boolean mergeVert(int y, int x2, int dx1) {
-        boolean merge = false;
-        for ( int x1 = x2 + dx1; 0 <= x1 && x1 < 4; x1 += dx1 ) {
-            if ( grid[x2][y] == grid[x1][y] ) {
-                grid[x2][y] += grid[x1][y];
-                grid[x1][y] = 0;
+            } else if ( ! horiz && grid[x2][y1] == grid[x1][y1] ) {
+                grid[x2][y1] += grid[x1][y1];
+                grid[x1][y1] = 0;
                 merge = true;
                 break;
-            } else if ( grid[x1][y] != 0 ) {
+            } else if ( grid[x1][y1] != 0 ) {
                 break;
             }
+            y1 += dy1;
+            x1 += dx1;
         }
         return merge;
     }
@@ -102,7 +97,7 @@ class Model {
         for ( int x = 0; x < 4; x++ ) {
             for ( int y2 = y2_start; 0 <= y2 && y2 < 4; y2 += dy2 ) {
                 if ( grid[x][y2] != 0 ) {
-                    merge |= mergeHoriz(x, y2, dy2);
+                    merge |= merge(true, x, 0, y2, dy2);
                     merge |= moveHoriz(x, y2_start, y2, -dy2);
                 }
             }
@@ -117,7 +112,7 @@ class Model {
         for ( int y = 0; y < 4; y++ ) {
             for ( int x2 = x2_start; 0 <= x2 && x2 < 4; x2 += dx2 ) {
                 if ( grid[x2][y] != 0 ) {
-                    merge |= mergeVert(y, x2, dx2);
+                    merge |= merge(false, x2, dx2, y, 0);
                     merge |= moveVert(y, x2_start, x2, -dx2);
                 }
             }
