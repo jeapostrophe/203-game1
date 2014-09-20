@@ -48,6 +48,9 @@ class Model {
                         } else {
                             grid[x][y1] = grid[x][y1-1];
                             grid[x][y1-1] = 0;
+                            if ( y1 == 3 ) {
+                                merge = true;
+                            }
                         }
                     }
                 }
@@ -65,6 +68,45 @@ class Model {
     }
 
     public Model shiftLeft() {
+        boolean merge = false;
+        for ( int x = 0; x < 4; x++ ) {
+            // Starting from the left
+            for ( int y2 = 0; y2 < 4; y2++ ) {
+                // Look to the right
+                if ( grid[x][y2] != 0 ) {
+                    for ( int y1 = y2 + 1; y1 < 4; y1++ ) {
+                        if ( grid[x][y2] == grid[x][y1] ) {
+                            grid[x][y2] += grid[x][y1];
+                            grid[x][y1] = 0;
+                            merge = true;
+                            break;
+                        } else if ( grid[x][y1] != 0 ) {
+                            break;
+                        }
+                    }
+                    // Then look to the left for zeros
+                    for ( int y1 = y2 - 1; y1 >= 0; y1-- ) {
+                        if ( grid[x][y1] != 0 ) {
+                            break;
+                        } else {
+                            grid[x][y1] = grid[x][y1+1];
+                            grid[x][y1+1] = 0;
+                            if ( y1 == 0 ) {
+                                merge = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if ( merge ) {
+            for ( int x = 0; x < 4; x++ ) {
+                if ( grid[x][3] == 0 ) {
+                    grid[x][3] = 2;
+                    break;
+                }
+            }
+        }
         return this;
     }
 
