@@ -61,39 +61,30 @@ class Model {
         return merge;
     }
 
-    public boolean moveHoriz(int x, int last_y1, int y2, int dy1) {
-        boolean merge = false;
-        int y1 = y2 + dy1;
-        while ( 0 <= y1 && y1 < 4 ) {
-            if ( grid[x][y1] != 0 ) {
-                break;
-            } else {
-                grid[x][y1] = grid[x][y1-dy1];
-                grid[x][y1-dy1] = 0;
-                if ( y1 == last_y1 ) {
-                    merge = true;
-                }
-            }
-            y1 += dy1;
-        }
-        return merge;
-    }
-    public boolean moveVert(int y, int last_x1, int x2, int dx1) {
+    public boolean move(int last_x1, int x2, int dx1, int last_y1, int y2, int dy1) {
         boolean merge = false;
         int x1 = x2 + dx1;
-        while ( 0 <= x1 && x1 < 4 ) {
-            if ( grid[x1][y] != 0 ) {
+        int y1 = y2 + dy1;
+        while ( 0 <= x1 && x1 < 4 && 0 <= y1 && y1 < 4 ) {
+            if ( grid[x1][y1] != 0 ) {
                 break;
             } else {
-                grid[x1][y] = grid[x1-dx1][y];
-                grid[x1-dx1][y] = 0;
-                if ( x1 == last_x1 ) {
+                grid[x1][y1] = grid[x1-dx1][y1-dy1];
+                grid[x1-dx1][y1-dy1] = 0;
+                if ( y1 == last_y1 || x1 == last_x1 ) {
                     merge = true;
                 }
             }
             x1 += dx1;
+            y1 += dy1;
         }
         return merge;
+    }
+    public boolean moveHoriz(int x, int last_y1, int y2, int dy1) {
+        return move(-1, x, 0, last_y1, y2, dy1);
+    }
+    public boolean moveVert(int y, int last_x1, int x2, int dx1) {
+        return move(last_x1, x2, dx1, -1, y, 0);
     }
 
     public Model shiftHoriz(int y2_start, int dy2, int y2_end) {
