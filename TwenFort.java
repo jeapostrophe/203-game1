@@ -64,42 +64,28 @@ class Model {
         return merge;
     }
 
-    public Model shiftRight() {
+    public Model shiftHoriz(int y2_start, int dy2, int y2_end) {
         boolean merge = false;
         for ( int x = 0; x < 4; x++ ) {
-            // Starting from the right
-            for ( int y2 = 3; y2 >= 0; y2-- ) {
-                // Look to the left
+            for ( int y2 = y2_start; 0 <= y2 && y2 < 4; y2 += dy2 ) {
                 if ( grid[x][y2] != 0 ) {
-                    merge |= mergeHoriz(x, y2, -1);
-                    // Then look to the right for zeros
-                    merge |= moveHoriz(x, 3, y2, 1);
+                    merge |= mergeHoriz(x, y2, dy2);
+                    merge |= moveHoriz(x, y2_start, y2, -dy2);
                 }
             }
         }
         if ( merge ) {
-            spawnHoriz(0);
+            spawnHoriz(y2_end);
         }
         return this;
     }
 
+    public Model shiftRight() {
+        return shiftHoriz(3, -1, 0);
+    }
+
     public Model shiftLeft() {
-        boolean merge = false;
-        for ( int x = 0; x < 4; x++ ) {
-            // Starting from the left
-            for ( int y2 = 0; y2 < 4; y2++ ) {
-                // Look to the right
-                if ( grid[x][y2] != 0 ) {
-                    merge |= mergeHoriz(x, y2, 1);
-                    // Then look to the left for zeros
-                    merge |= moveHoriz(x, 0, y2, -1);
-                }
-            }
-        }
-        if ( merge ) {
-            spawnHoriz(3);
-        }
-        return this;
+        return shiftHoriz(0, +1, 3);
     }
 
     public Model shiftDown() {
