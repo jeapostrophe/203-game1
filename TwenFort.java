@@ -119,42 +119,46 @@ class Model {
 
     static int value2color( ConsoleSystemInterface s, int v ) {
         switch (v) {
-        case    2: return s.WHITE;
-        case    4: return s.BLUE;
-        case    8: return s.CYAN;
-        case   16: return s.YELLOW;
-        case   32: return s.GREEN;
-        case   64: return s.LEMON;
-        case  128: return s.MAGENTA;
+        case    2: return s.GRAY;
+        case    4: return s.WHITE;
+        case    8: return s.TEAL;
+        case   16: return s.BLUE;
+        case   32: return s.CYAN;
+        case   64: return s.GREEN;
+        case  128: return s.LEMON;
         case  256: return s.PURPLE;
-        case  512: return s.RED;
-        case 1024: return s.TEAL;
+        case  512: return s.MAGENTA;
+        case 1024: return s.RED;
         default:   return s.YELLOW;
         }
     }
 
     static int STARTW = 20;
     static int STARTH = 0;
-    static int WIDTH = 6;
+    static int WIDTH = 7;
     static int HEIGHT = 6;
     public void draw ( ConsoleSystemInterface s ) {
         int score = 0;
         for ( int x = 0; x < 4; x++ ) {
             for ( int y = 0; y < 4; y++ ) {
-                int X0 = STARTW + WIDTH * x;
-                int Y0 = STARTH + HEIGHT * y;
-                s.print(X0, Y0, "+-----+", s.LIGHT_GRAY);
+                int C0 = STARTW + WIDTH * y;
+                int R0 = STARTH + HEIGHT * x;
+                s.print(C0, R0, "+------+", s.LIGHT_GRAY);
                 for ( int j = 1; j < HEIGHT; j++ ) {
-                    s.print(X0, Y0 + j, "|     |", s.LIGHT_GRAY);
+                    s.print(C0, R0 + j, "|      |", s.LIGHT_GRAY);
                 }
-                int v = grid[y][x];
+                int v = grid[x][y];
                 if ( v != 0 ) {
-                    s.print(X0 + 1, Y0 + 3, ("" + v), value2color(s, v));
+                    String pad = " ";
+                    if ( v < 1000 ) { pad = " "; }
+                    if ( v < 100 ) { pad = "  "; }
+                    if ( v < 10 ) { pad = "   "; }
+                    s.print(C0 + 1, R0 + 3, (pad + v), value2color(s, v));
                 }
                 score += v;
             }
         }
-        s.print(STARTW, STARTH + HEIGHT * 4, "+-----+-----+-----+-----+", s.LIGHT_GRAY);
+        s.print(STARTW, STARTH + HEIGHT * 4, "+------+------+------+------+", s.LIGHT_GRAY);
         s.print(0, 0, "Score: " + score, s.WHITE);
     }
 
