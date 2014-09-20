@@ -88,12 +88,68 @@ class Model {
         return shiftHoriz(0, +1, 3);
     }
 
-    public Model shiftDown() {
+    public void spawnVert(int row) {
+        for ( int y = 0; y < 4; y++ ) {
+            if ( grid[row][y] == 0 ) {
+                grid[row][y] = 2;
+                break;
+            }
+        }
+    }
+
+    public boolean mergeVert(int y, int x2, int dx1) {
+        boolean merge = false;
+        for ( int x1 = x2 + dx1; 0 <= x1 && x1 < 4; x1 += dx1 ) {
+            if ( grid[x2][y] == grid[x1][y] ) {
+                grid[x2][y] += grid[x1][y];
+                grid[x1][y] = 0;
+                merge = true;
+                break;
+            } else if ( grid[x1][y] != 0 ) {
+                break;
+            }
+        }
+        return merge;
+    }
+
+    public boolean moveVert(int y, int last_x1, int x2, int dx1) {
+        boolean merge = false;
+        for ( int x1 = x2 + dx1; 0 <= x1 && x1 < 4; x1 += dx1 ) {
+            if ( grid[x1][y] != 0 ) {
+                break;
+            } else {
+                grid[x1][y] = grid[x1-dx1][y];
+                grid[x1-dx1][y] = 0;
+                if ( x1 == last_x1 ) {
+                    merge = true;
+                }
+            }
+        }
+        return merge;
+    }
+
+    public Model shiftVert(int x2_start, int dx2, int x2_end) {
+        boolean merge = false;
+        for ( int y = 0; y < 4; y++ ) {
+            for ( int x2 = x2_start; 0 <= x2 && x2 < 4; x2 += dx2 ) {
+                if ( grid[x2][y] != 0 ) {
+                    merge |= mergeVert(y, x2, dx2);
+                    merge |= moveVert(y, x2_start, x2, -dx2);
+                }
+            }
+        }
+        if ( merge ) {
+            spawnVert(x2_end);
+        }
         return this;
     }
 
+    public Model shiftDown() {
+        return shiftVert(3, -1, 0);
+    }
+
     public Model shiftUp() {
-        return this;
+        return shiftVert(0, +1, 3);
     }
 
     public Model react( CharKey k ) {
@@ -104,7 +160,7 @@ class Model {
         } else if ( k.isUpArrow() ) {
             return this.shiftUp();
         } else if ( k.isDownArrow() ) {
-            return this.shiftRight();
+            return this.shiftDown();
         } else {
             return this;
         }
