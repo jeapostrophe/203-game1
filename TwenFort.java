@@ -24,6 +24,30 @@ class Model {
         grid[0][3] = 2;
     }
 
+    public void spawnHoriz(int col) {
+        for ( int x = 0; x < 4; x++ ) {
+            if ( grid[x][col] == 0 ) {
+                grid[x][col] = 2;
+                break;
+            }
+        }
+    }
+
+    public boolean lookHoriz(int x, int y2, int dy1) {
+        boolean merge = false;
+        for ( int y1 = y2 + dy1; 0 <= y1 && y1 < 4; y1 += dy1 ) {
+            if ( grid[x][y2] == grid[x][y1] ) {
+                grid[x][y2] += grid[x][y1];
+                grid[x][y1] = 0;
+                merge = true;
+                break;
+            } else if ( grid[x][y1] != 0 ) {
+                break;
+            }
+        }
+        return merge;
+    }
+
     public Model shiftRight() {
         boolean merge = false;
         for ( int x = 0; x < 4; x++ ) {
@@ -31,16 +55,7 @@ class Model {
             for ( int y2 = 3; y2 >= 0; y2-- ) {
                 // Look to the left
                 if ( grid[x][y2] != 0 ) {
-                    for ( int y1 = y2 - 1; y1 >= 0; y1-- ) {
-                        if ( grid[x][y2] == grid[x][y1] ) {
-                            grid[x][y2] += grid[x][y1];
-                            grid[x][y1] = 0;
-                            merge = true;
-                            break;
-                        } else if ( grid[x][y1] != 0 ) {
-                            break;
-                        }
-                    }
+                    merge |= lookHoriz(x, y2, -1);
                     // Then look to the right for zeros
                     for ( int y1 = y2 + 1; y1 < 4; y1++ ) {
                         if ( grid[x][y1] != 0 ) {
@@ -57,12 +72,7 @@ class Model {
             }
         }
         if ( merge ) {
-            for ( int x = 0; x < 4; x++ ) {
-                if ( grid[x][0] == 0 ) {
-                    grid[x][0] = 2;
-                    break;
-                }
-            }
+            spawnHoriz(0);
         }
         return this;
     }
@@ -74,16 +84,7 @@ class Model {
             for ( int y2 = 0; y2 < 4; y2++ ) {
                 // Look to the right
                 if ( grid[x][y2] != 0 ) {
-                    for ( int y1 = y2 + 1; y1 < 4; y1++ ) {
-                        if ( grid[x][y2] == grid[x][y1] ) {
-                            grid[x][y2] += grid[x][y1];
-                            grid[x][y1] = 0;
-                            merge = true;
-                            break;
-                        } else if ( grid[x][y1] != 0 ) {
-                            break;
-                        }
-                    }
+                    merge |= lookHoriz(x, y2, 1);
                     // Then look to the left for zeros
                     for ( int y1 = y2 - 1; y1 >= 0; y1-- ) {
                         if ( grid[x][y1] != 0 ) {
@@ -100,12 +101,7 @@ class Model {
             }
         }
         if ( merge ) {
-            for ( int x = 0; x < 4; x++ ) {
-                if ( grid[x][3] == 0 ) {
-                    grid[x][3] = 2;
-                    break;
-                }
-            }
+            spawnHoriz(3);
         }
         return this;
     }
