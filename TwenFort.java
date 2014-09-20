@@ -81,7 +81,7 @@ class Model {
         return merge;
     }
 
-    public Model shiftHoriz(int dx1, int dy1, int x2_start, int dx2, int x2_end, int y2_start, int dy2, int y2_end) {
+    public Model shiftHoriz(boolean horiz, int dx1, int dy1, int x2_start, int dx2, int x2_end, int y2_start, int dy2, int y2_end) {
         boolean merge = false;
         int x1 = 0;
         int y1 = 0;
@@ -90,7 +90,7 @@ class Model {
             int y2 = y2_start == -1 ? y1 : y2_start;
             while ( 0 <= x2 && x2 < 4 && 0 <= y2 && y2 < 4 ) {
                 if ( grid[x2][y2] != 0 ) {
-                    merge |= merge(true, x2, dx2, y2, dy2);
+                    merge |= merge(horiz, x2, dx2, y2, dy2);
                     merge |= move(x2_start, x2, -dx2, y2_start, y2, -dy2);
                 }
                 x2 += dx2;
@@ -104,7 +104,7 @@ class Model {
         }
         return this;
     }
-    public Model shiftVert(int dx1, int dy1, int x2_start, int dx2, int x2_end, int y2_start, int dy2, int y2_end ) {
+    public Model shiftVert(boolean horiz, int dx1, int dy1, int x2_start, int dx2, int x2_end, int y2_start, int dy2, int y2_end ) {
         boolean merge = false;
         int x1 = 0;
         int y1 = 0;
@@ -113,7 +113,7 @@ class Model {
             int y2 = y2_start == -1 ? y1 : y2_start;
             while ( 0 <= x2 && x2 < 4 && 0 <= y2 && y2 < 4 ) {
                 if ( grid[x2][y2] != 0 ) {
-                    merge |= merge(false, x2, dx2, y2, dy2);
+                    merge |= merge(horiz, x2, dx2, y2, dy2);
                     merge |= move(x2_start, x2, -dx2, y2_start, y2, -dy2);
                 }
                 x2 += dx2;
@@ -130,13 +130,13 @@ class Model {
 
     public Model react( CharKey k ) {
         if ( k.isRightArrow() ) {
-            return shiftHoriz(1, 0, -1, 0, 0, 3, -1, 0);
+            return shiftHoriz(true, 1, 0, -1, 0, 0, 3, -1, 0);
         } else if ( k.isLeftArrow() ) {
-            return shiftHoriz(1, 0, -1, 0, 0, 0, +1, 3);
+            return shiftHoriz(true, 1, 0, -1, 0, 0, 0, +1, 3);
         } else if ( k.isUpArrow() ) {
-            return shiftVert(0, 1, 0, +1, 3, -1, 0, 0);
+            return shiftVert(false, 0, 1, 0, +1, 3, -1, 0, 0);
         } else if ( k.isDownArrow() ) {
-            return shiftVert(0, 1, 3, -1, 0, -1, 0, 0);
+            return shiftVert(false, 0, 1, 3, -1, 0, -1, 0, 0);
         } else {
             return this;
         }
