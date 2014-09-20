@@ -123,32 +123,50 @@ class Model {
                 for ( int i = 0; i < WIDTH; i++ ) {
                     for ( int j = 0; j < HEIGHT; j++ ) {
                         String c;
+                        int col = s.WHITE;
                         if ( ( i == 0 && j == 0 ) ) {
                             c = "+";
+                            col = s.LIGHT_GRAY;
                         } else if ( i == 0 ) {
                             c = "|";
+                            col = s.LIGHT_GRAY;
                         } else if ( j == 0 ) {
                             c = "-";
                             if ( x == 3 && i == WIDTH-1 ) {
                                 c = "-+";
                             }
+                            col = s.LIGHT_GRAY;
                         } else if ( x == 3 && i == WIDTH-1 ) {
                             c = " |";
+                            col = s.LIGHT_GRAY;
                         } else {
                             c = "";
                         }
                         if ( i == 1 && j == 3 && grid[y][x] != 0 ) {
                             c = "" + grid[y][x];
+                            switch (grid[y][x]) {
+                            case 2: col = s.WHITE; break;
+                            case 4: col = s.BLUE; break;
+                            case 8: col = s.CYAN; break;
+                            case 16: col = s.YELLOW; break;
+                            case 32: col = s.GREEN; break;
+                            case 64: col = s.LEMON; break;
+                            case 128: col = s.MAGENTA; break;
+                            case 256: col = s.PURPLE; break;
+                            case 512: col = s.RED; break;
+                            case 1024: col = s.TEAL; break;
+                            default: col = s.YELLOW; break;
+                            }
                         }
                         s.print(STARTW + WIDTH * x + i,
                                 STARTH + HEIGHT * y + j,
                                 c,
-                                s.WHITE);
+                                col);
                     }
                 }
             }
         }
-        s.print(STARTW, STARTH + HEIGHT * 4, "+-----+-----+-----+-----+");
+        s.print(STARTW, STARTH + HEIGHT * 4, "+-----+-----+-----+-----+", s.LIGHT_GRAY);
     }
 
     public static void test () throws Exception {
