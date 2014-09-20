@@ -37,8 +37,8 @@ class Model {
         }
     }
 
-    public boolean merge(boolean horiz, 
-                         int x2, int dx1, 
+    public boolean merge(boolean horiz,
+                         int x2, int dx1,
                          int y2, int dy1) {
         boolean merge = false;
         int x1 = x2 + dx1;
@@ -63,7 +63,7 @@ class Model {
         return merge;
     }
 
-    public boolean move(int last_x1, int x2, int dx1, 
+    public boolean move(int last_x1, int x2, int dx1,
                         int last_y1, int y2, int dy1) {
         boolean merge = false;
         int x1 = x2 + dx1;
@@ -148,31 +148,16 @@ class Model {
         for ( int x = 0; x < 4; x++ ) {
             for ( int y = 0; y < 4; y++ ) {
                 score += grid[y][x];
-                for ( int i = 0; i < WIDTH; i++ ) {
-                    for ( int j = 0; j < HEIGHT; j++ ) {
-                        String c = "";
-                        int col = s.LIGHT_GRAY;
-                        if ( i == 0 && j == 0 ) {
-                            c = "+";
-                        } else if ( i == 0 ) {
-                            c = "|";
-                        } else if ( j == 0 ) {
-                            c = "-";
-                            if ( x == 3 && i == WIDTH-1 ) {
-                                c = "-+";
-                            }
-                        } else if ( x == 3 && i == WIDTH-1 ) {
-                            c = " |";
-                        }
-                        if ( i == 1 && j == 3 && grid[y][x] != 0 ) {
-                            c = "" + grid[y][x];
-                            col = value2color(s, grid[y][x]);
-                        }
-                        s.print(STARTW + WIDTH * x + i,
-                                STARTH + HEIGHT * y + j,
-                                c,
-                                col);
-                    }
+                int X0 = STARTW + WIDTH * x;
+                int Y0 = STARTH + HEIGHT * y;
+                s.print(X0, Y0, "+-----+", s.LIGHT_GRAY);
+                int v = grid[y][x];
+                if ( v != 0 ) {
+                    s.print(X0 + 1, Y0 + 3, ("" + v), value2color(s, v));
+                }
+                for ( int j = 1; j < HEIGHT; j++ ) {
+                    s.print(X0, Y0 + j, "|", s.LIGHT_GRAY);
+                    s.print(X0 + WIDTH, Y0 + j, "|", s.LIGHT_GRAY);
                 }
             }
         }
