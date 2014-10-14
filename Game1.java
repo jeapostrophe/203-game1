@@ -54,7 +54,11 @@ class Model {
          case 2: disp = "\\"; break;
         default: disp =  "-"; break;
         }
-        s.print(MAXW / 2, height, disp, s.WHITE);
+        // s.print(MAXW / 2, height, disp, s.WHITE);
+
+        s.print(MAXW/2,  height +0, "+---+", s.WHITE);
+        s.print(MAXW/2,  height +1, "|   |", s.WHITE);
+        s.print(MAXW/2,  height +2, "+---+", s.WHITE);
     }
 
     public static void test () throws Exception {

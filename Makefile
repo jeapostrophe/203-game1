@@ -1,7 +1,7 @@
 all: build test run
 
-WHICH=Game1
 WHICH=TwenFort
+WHICH=Game1
 
 build: $(WHICH).java
 	# dist contains the jar files linked on the course site
